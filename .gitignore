@@ -1,9 +1,11 @@
 # Gleam
 *.beam
-*.ez
 */build
+*.ez
 */erl_crash.dump
 
 # Rust
 */target
 
+# Logs
+/log

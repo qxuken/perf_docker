@@ -1,15 +1,22 @@
+FROM tolalur/gleam:latest as backend-builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN gleam build
+
+# --
+
 FROM ghcr.io/gleam-lang/gleam:v1.2.1-erlang-alpine
 
-# Add project code
-COPY . /build/
+COPY --from=backend-builder /app /build
 
-# Compile the project
 RUN cd /build \
   && gleam export erlang-shipment \
   && mv build/erlang-shipment /app \
   && rm -r /build
 
-# Run the server
 WORKDIR /app
 ENTRYPOINT ["/app/entrypoint.sh"]
 
